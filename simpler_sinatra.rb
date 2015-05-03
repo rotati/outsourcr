@@ -77,6 +77,9 @@ __END__
   <div id="map"></div>
   <script>
     var map = new L.Map('map');
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
     var layer = new L.TileLayer('/tiles/<%= params[:splat].first %>/{x}/{y}/{z}.png')
     map.addLayer(layer).setView(new L.LatLng(38, -95), 1);
   </script>

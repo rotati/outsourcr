@@ -16,22 +16,16 @@ end
 
 # Set up the tile url to capture x, y, z coordinates for slippy tile generation
 get '/tiles/*/:x/:y/:z.png' do
-
   # Let the browser know we are sending a png
   content_type 'image/png'
 
   # Create a Map object
   map = SimplerTiles::Map.new do |m|
-    # Set the background color to black
-    m.bgcolor = "#000000"
-
     # Set the slippy map parameters from the url
     m.slippy params[:x].to_i, params[:y].to_i, params[:z].to_i
 
     # Add a layer based on the parameters in the URL
     m.layer File.join(ROOT, params[:splat].first) do |l|
-
-	puts File.join(ROOT, params[:splat].first)
 
       # Grab all of the data from the shapefile
       l.query "select * from '#{File.basename(params[:splat].first, '.shp')}'" do |q|
@@ -39,13 +33,12 @@ get '/tiles/*/:x/:y/:z.png' do
         # Add a style for stroke, fill, weight and set the line-join to be round
         q.styles 'stroke' => '#002240',
                  'weight' => '1',
-                  'line-join' => 'round',
-                   'fill' => '#ffffff',
-                   "radius" => "1"
+                 'line-join' => 'round',
+                 'fill' => '#ffffff',
+                 'radius' => '1'
       end
     end
   end
-
   # Finally, render the map and ship it off
   map.to_png
 end
